@@ -5,27 +5,33 @@ import Display from './Display'
 
 import { is, substituteKey, calculateEquation } from '../helpers'
 import { action } from '../state/actions'
-import { initialState } from '../state/constants'
+import { initialState, State, Action } from '../state/constants'
 import { calculatorReducer } from '../state/reducers'
 import { CalculatorDispatch } from './context'
 
-const logState = reducer => (state, action) => {
+const logState = (reducer: (state: State, action: Action) => State) => (
+  state: State,
+  action: Action
+) => {
   const newState = reducer(state, action)
   console.log(newState)
   return newState
 }
 
-const reducer =
+const reducer: (state: State, action: Action) => State =
   process.env.NODE_ENV === 'development'
     ? logState(calculatorReducer)
     : calculatorReducer
 
 function Calculator() {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch]: [State, React.Dispatch<Action>] = useReducer(
+    reducer,
+    initialState
+  )
 
   // useEffect hook to capture `keydown` events
   useEffect(() => {
-    const onKeyDown = event => {
+    const onKeyDown = (event: KeyboardEvent) => {
       event.preventDefault()
 
       const key = substituteKey(event.key)
@@ -40,7 +46,8 @@ function Calculator() {
 
   // probably unnecessary but with useMemo 'acc' is only recalculated when
   // state.equation changes and not with every re-render.
-  const calculateAcc = eq => (eq.length < 3 ? 0 : calculateEquation(eq))
+  const calculateAcc = (eq: State['equation']) =>
+    eq.length < 3 ? 0 : calculateEquation(eq)
   const acc = useMemo(() => calculateAcc(state.equation), [state.equation])
 
   const show = ['OPERATOR', 'EXECUTE', 'USE_EQUATION'].includes(state.last)

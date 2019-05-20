@@ -5,6 +5,7 @@ import {
   OPERATOR,
   USE_EQUATION,
   initialState,
+  State,
 } from './constants'
 import {
   inputDigit,
@@ -17,7 +18,12 @@ import {
   midStateChange,
 } from './functions'
 
-function normalReducer(state, action) {
+export interface Action {
+  type: string
+  [index: string]: number | string
+}
+
+function normalReducer(state: State, action: Action): State {
   switch (action.type) {
     case DIGIT:
       return inputDigit(action.digit)(state)
@@ -34,7 +40,7 @@ function normalReducer(state, action) {
   }
 }
 
-function postExecReducer(state, action) {
+function postExecReducer(state: State, action: Action): State {
   switch (action.type) {
     case DIGIT:
       return inputDigitPostExec(action.digit)(state)

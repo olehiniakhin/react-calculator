@@ -3,6 +3,7 @@ import { Flex } from 'rebass'
 
 import Screen from './Screen'
 
+import { State, Action } from '../../state/constants'
 import { useEquation } from '../../state/actions'
 import { CalculatorDispatch } from '../context'
 
@@ -17,8 +18,8 @@ const style = {
   },
 }
 
-function Row({ children, id }) {
-  const dispatch = useContext(CalculatorDispatch)
+function Row({ children, id }: { children: string; id: number }) {
+  const dispatch: React.Dispatch<Action> = useContext(CalculatorDispatch)
 
   return (
     <Screen
@@ -34,11 +35,15 @@ function Row({ children, id }) {
   )
 }
 
-const HistoryScreen = props => (
+export interface HistoryScreenProps {
+  history: State['history']
+}
+
+const HistoryScreen = (props: HistoryScreenProps) => (
   <Flex flexWrap="wrap">
-    {props.history.map((eq, id) => (
+    {props.history.map((equation, id) => (
       <Row key={id} id={id}>
-        {eq.join(' ')}
+        {equation.join(' ')}
       </Row>
     ))}
   </Flex>

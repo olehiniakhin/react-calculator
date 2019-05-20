@@ -1,11 +1,15 @@
 import React from 'react'
-import { Text } from 'rebass'
+import { Text, TextProps } from 'rebass'
 
 const style = {
-  whiteSpace: 'nowrap',
+  'white-space': 'nowrap',
 }
 
-function Screen(props) {
+export interface ScreenProps extends TextProps {
+  size?: number
+}
+
+function Screen(props: ScreenProps) {
   const { children, size } = props
 
   const numDigitsToDisplay = size || Infinity

@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { Box, Button, Text } from 'rebass'
 // import PropTypes from 'prop-types'
 
+import { State, Action } from '../../state/constants'
 import { action } from '../../state/actions'
 import { CalculatorDispatch } from '../context'
 
@@ -21,8 +22,8 @@ const style = {
   },
 }
 
-function Key({ value, size }) {
-  const dispatch = useContext(CalculatorDispatch)
+function Key({ value, size }: { value: string; size: number }) {
+  const dispatch: React.Dispatch<Action> = useContext(CalculatorDispatch)
 
   return (
     <Box width={size / 4}>
